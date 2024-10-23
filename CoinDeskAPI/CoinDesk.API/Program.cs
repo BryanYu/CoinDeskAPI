@@ -1,4 +1,4 @@
-namespace CoinDeskAPI;
+namespace CoinDesk.API;
 
 public class Program
 {
