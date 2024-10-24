@@ -1,4 +1,10 @@
+using CoinDesk.Domain.QueryHandler;
 using CoinDesk.Infrastructure;
+using CoinDesk.Infrastructure.Repository.Base;
+using CoinDesk.Infrastructure.Repository.Implements;
+using CoinDesk.Infrastructure.Repository.Interfaces;
+using CoinDesk.Model.Config;
+using CoinDesk.Model.Query;
 using Microsoft.EntityFrameworkCore;
 
 namespace CoinDesk.API;
@@ -14,9 +20,13 @@ public class Program
         builder.Services.AddSwaggerGen();
         builder.Services.AddDbContext<CurrencyDbContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("CurrencyDB")));
+        builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+        builder.Services.AddScoped<ICurrencyRepository, CurrencyRepository>();
+        builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(GetCurrencyQueryHandler).Assembly));
 
+        builder.Services.Configure<PaginationConfig>(builder.Configuration.GetSection("PaginationConfig"));
+        
         var app = builder.Build();
-
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();

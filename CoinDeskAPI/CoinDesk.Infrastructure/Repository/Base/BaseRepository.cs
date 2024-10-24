@@ -1,4 +1,5 @@
 ﻿using System.Linq.Expressions;
+using CoinDesk.Infrastructure.Model;
 using Microsoft.EntityFrameworkCore;
 
 namespace CoinDesk.Infrastructure.Repository.Base;
@@ -19,12 +20,7 @@ public class BaseRepository<TEntity> : IRepository<TEntity> where TEntity : clas
         return await this._dbSet.FindAsync(id);
     }
 
-    public async Task<IEnumerable<TEntity>> GetAllAsync()
-    {
-        return await this._dbSet.ToListAsync();
-    }
-
-    public async Task<IEnumerable<TEntity>> Get(Expression<Func<TEntity, bool>> predicate = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null)
+    public async Task<IEnumerable<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> predicate = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null)
     {
         IQueryable<TEntity> query = _dbSet;
         if (predicate != null)
@@ -37,6 +33,35 @@ public class BaseRepository<TEntity> : IRepository<TEntity> where TEntity : clas
             return await orderBy(query).ToListAsync();
         }
         return await query.ToListAsync();
+    }
+
+    public async Task<PagedResult<TEntity>> GetPagingAsync(Expression<Func<TEntity, bool>> predicate = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, PagingParameter pagingParameter = null)
+    {
+        IQueryable<TEntity> query = _dbSet;
+        if (predicate != null)
+        {
+            query = query.Where(predicate);
+        }
+
+        if (orderBy != null)
+        {
+            query = orderBy(query);
+        }
+
+        IQueryable<TEntity> pagingResult = query;
+        if (pagingParameter != null)
+        {
+            
+            
+            
+            pagingResult  = query.Skip(pagingParameter.PageNumber * pagingParameter.PageSize).Take(pagingParameter.PageSize);
+        }
+
+        return new PagedResult<TEntity>
+        {
+            Items = await pagingResult.ToListAsync(),
+            TotalRecords = await query.CountAsync()
+        };
     }
 
     public Task AddAsync(TEntity entity)
