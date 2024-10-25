@@ -1,4 +1,6 @@
-﻿using CoinDesk.Model.Query;
+﻿using CoinDesk.Domain.CommandHandler;
+using CoinDesk.Model.Command;
+using CoinDesk.Model.Query;
 using CoinDesk.Model.Request;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -37,5 +39,26 @@ public class CurrencyController : ControllerBase
             PageNumber = request.PageNumber
         });
         return Ok(response);
+    }
+
+    /// <summary>
+    /// 新增幣別
+    /// </summary>
+    /// <param name="request"></param>
+    /// <returns></returns>
+    [HttpPost]
+    [Route("")]
+    public async Task<IActionResult> AddCurrency([FromBody] AddCurrencyRequest request)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest();
+        }
+        var result = await _mediator.Send(new AddCurrencyCommand
+        {
+            Name = request.Name,
+            CurrencyCode = request.CurrencyCode.ToLower()
+        });
+        return Ok(result);
     }
 }

@@ -61,6 +61,16 @@ public class BaseRepository<TEntity> : IRepository<TEntity> where TEntity : clas
         };
     }
 
+    public async Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> predicate)
+    {
+        return await _dbSet.FirstOrDefaultAsync(predicate);
+    }
+
+    public async Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate)
+    {
+        return await _dbSet.AnyAsync(predicate);
+    }
+
     public Task AddAsync(TEntity entity)
     {
         _dbSet.AddAsync(entity);

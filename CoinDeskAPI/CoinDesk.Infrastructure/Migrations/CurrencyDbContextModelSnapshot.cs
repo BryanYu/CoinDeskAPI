@@ -35,7 +35,7 @@ namespace CoinDesk.Infrastructure.Migrations
 
                     b.Property<string>("CurrencyCode")
                         .IsRequired()
-                        .HasColumnType("char(3)")
+                        .HasColumnType("nvarchar(max)")
                         .HasComment("幣別代碼");
 
                     b.Property<string>("Name")
@@ -45,7 +45,6 @@ namespace CoinDesk.Infrastructure.Migrations
                         .HasComment("幣別名稱");
 
                     b.Property<DateTime?>("UpdateTime")
-                        .IsRequired()
                         .HasColumnType("datetime2")
                         .HasComment("修改時間");
 

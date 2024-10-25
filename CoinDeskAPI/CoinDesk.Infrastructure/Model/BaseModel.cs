@@ -15,7 +15,6 @@ public class BaseModel
     /// <summary>
     /// 修改時間
     /// </summary>
-    [Required]
     [Comment("修改時間")]
     public DateTime? UpdateTime { get; set; }
 }

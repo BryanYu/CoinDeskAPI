@@ -17,9 +17,9 @@ namespace CoinDesk.Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, comment: "幣別Id"),
                     Name = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false, comment: "幣別名稱"),
-                    CurrencyCode = table.Column<string>(type: "char(3)", nullable: false, comment: "幣別代碼"),
+                    CurrencyCode = table.Column<string>(type: "nvarchar(max)", nullable: false, comment: "幣別代碼"),
                     CreatedTime = table.Column<DateTime>(type: "datetime2", nullable: false, comment: "建立時間"),
-                    UpdateTime = table.Column<DateTime>(type: "datetime2", nullable: false, comment: "修改時間")
+                    UpdateTime = table.Column<DateTime>(type: "datetime2", nullable: true, comment: "修改時間")
                 },
                 constraints: table =>
                 {
