@@ -35,7 +35,7 @@ public class BaseRepository<TEntity> : IRepository<TEntity> where TEntity : clas
         return await query.ToListAsync();
     }
 
-    public async Task<PagedResult<TEntity>> GetPagingAsync(Expression<Func<TEntity, bool>> predicate = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, PagingParameter pagingParameter = null)
+    public async Task<PagedQueryResult<TEntity>> GetPagingAsync(Expression<Func<TEntity, bool>> predicate = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, PaginationParameter pagingParameter = null)
     {
         IQueryable<TEntity> query = _dbSet;
         if (predicate != null)
@@ -51,13 +51,10 @@ public class BaseRepository<TEntity> : IRepository<TEntity> where TEntity : clas
         IQueryable<TEntity> pagingResult = query;
         if (pagingParameter != null)
         {
-            
-            
-            
             pagingResult  = query.Skip(pagingParameter.PageNumber * pagingParameter.PageSize).Take(pagingParameter.PageSize);
         }
 
-        return new PagedResult<TEntity>
+        return new PagedQueryResult<TEntity>
         {
             Items = await pagingResult.ToListAsync(),
             TotalRecords = await query.CountAsync()

@@ -6,7 +6,7 @@ using MediatR;
 
 namespace CoinDesk.Domain.QueryHandler;
 
-public class GetCurrencyQueryHandler : IRequestHandler<GetCurrencyQuery, GetCurrencyResponse>
+public class GetCurrencyQueryHandler : IRequestHandler<GetCurrencyQuery, PagedResultResponse<CurrencyResponse>>
 {
     private readonly IUnitOfWork _unitOfWork;
 
@@ -15,23 +15,27 @@ public class GetCurrencyQueryHandler : IRequestHandler<GetCurrencyQuery, GetCurr
         _unitOfWork = unitOfWork;
     }
     
-    public async Task<GetCurrencyResponse> Handle(GetCurrencyQuery request, CancellationToken cancellationToken)
+    public async Task<PagedResultResponse<CurrencyResponse>> Handle(GetCurrencyQuery request, CancellationToken cancellationToken)
     {
-        var pagingParameter = new PagingParameter
+        var pagingParameter = new PaginationParameter
         {
             PageNumber = request.PageNumber,
             PageSize = request.PageSize
         };
         var result = await _unitOfWork.CurrencyRepository.GetPagingAsync(pagingParameter: pagingParameter);
-        return new GetCurrencyResponse
+        return new PagedResultResponse<CurrencyResponse>
         {
-            Currencies = result.Items.Select(item => new CurrencyData
+            Pagination = new Pagination
             {
-
-            }),
-            TotalRecords = result.TotalRecords,
-            PageNumber = request.PageNumber,
-            PageSize = request.PageSize
+                TotalRecords = result.TotalRecords,
+                PageNumber = request.PageNumber,
+                PageSize = request.PageSize,
+            },
+            Items = result.Items.Select(item => new CurrencyResponse
+            {
+                Name = item.Name,
+                CurrencyCode = item.CurrencyCode.ToString()
+            })
         };
     }
 }

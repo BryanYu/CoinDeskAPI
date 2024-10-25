@@ -1,6 +1,6 @@
 ﻿namespace CoinDesk.Infrastructure.Model;
 
-public class PagingParameter
+public class PaginationParameter
 {
     /// <summary>
     /// 每頁顯示幾筆

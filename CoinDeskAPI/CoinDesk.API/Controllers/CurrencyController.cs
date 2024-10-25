@@ -2,7 +2,6 @@
 using CoinDesk.Model.Request;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace CoinDesk.API.Controllers;
 
