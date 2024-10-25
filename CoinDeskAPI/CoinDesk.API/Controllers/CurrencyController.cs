@@ -57,7 +57,30 @@ public class CurrencyController : ControllerBase
         var result = await _mediator.Send(new AddCurrencyCommand
         {
             Name = request.Name,
-            CurrencyCode = request.CurrencyCode.ToLower()
+            CurrencyCode = request.CurrencyCode
+        });
+        return Ok(result);
+    }
+
+    /// <summary>
+    /// 更新幣別
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="request"></param>
+    /// <returns></returns>
+    [HttpPut]
+    [Route("{id}")]
+    public async Task<IActionResult> UpdateCurrency([FromRoute] Guid id, [FromBody] UpdateCurrencyRequest request)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest();
+        }
+
+        var result = await _mediator.Send(new UpdateCurrencyCommand
+        {
+            Id = id,
+            Name = request.Name
         });
         return Ok(result);
     }

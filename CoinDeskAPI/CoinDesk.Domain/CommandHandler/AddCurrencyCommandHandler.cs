@@ -21,9 +21,10 @@ public class AddCurrencyCommandHandler : IRequestHandler<AddCurrencyCommand, boo
         {
             return false;
         }
+
         var newCurrency = new Currency
         {
-            CurrencyCode = request.CurrencyCode,
+            CurrencyCode = request.CurrencyCode.ToUpper(),
             Name = request.Name,
             CreatedTime = DateTime.Now
         };
