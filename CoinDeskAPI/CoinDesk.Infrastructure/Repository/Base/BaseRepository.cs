@@ -51,7 +51,7 @@ public class BaseRepository<TEntity> : IRepository<TEntity> where TEntity : clas
         IQueryable<TEntity> pagingResult = query;
         if (pagingParameter != null)
         {
-            pagingResult  = query.Skip(pagingParameter.PageNumber * pagingParameter.PageSize).Take(pagingParameter.PageSize);
+            pagingResult  = query.Skip((pagingParameter.PageNumber - 1) * pagingParameter.PageSize).Take(pagingParameter.PageSize);
         }
 
         return new PagedQueryResult<TEntity>

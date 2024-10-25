@@ -32,22 +32,23 @@ public class GetCurrencyQueryHandler : IRequestHandler<GetCurrencyQuery, PagedRe
             PageNumber = request.PageNumber,
             PageSize = request.PageSize
         };
-        var queryResult = await _unitOfWork.CurrencyRepository.GetPagingAsync(pagingParameter: pagingParameter);
+        var queryResult = await _unitOfWork.CurrencyRepository.GetPagingAsync(
+            orderBy: condition => condition.OrderByDescending(item => item.CurrencyCode)
+            , pagingParameter: pagingParameter);
 
         var currencyDetails = queryResult.Items.Select(item =>
         {
+            var rate = 0m;
             if (currencyResult.currencyPrices.TryGetValue(item.CurrencyCode, out var currencyPrice))
             {
-                return new CurrencyDetailResponse
-                {
-                    CurrencyCode = item.CurrencyCode,
-                    Rate = currencyPrice.Rate,
-                };
+                rate = currencyPrice.Rate;
             }
             return new CurrencyDetailResponse
             {
+                Id = item.Id,
+                Name = item.Name,
                 CurrencyCode = item.CurrencyCode,
-                Rate = 0m
+                Rate = rate
             };
         });
         

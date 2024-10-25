@@ -15,6 +15,12 @@ public class CurrencyResponse
 
 public class CurrencyDetailResponse
 {
+    
+    /// <summary>
+    /// 幣別Id
+    /// </summary>
+    public Guid Id { get; set; }
+    
     /// <summary>
     /// 幣別名稱
     /// </summary>
