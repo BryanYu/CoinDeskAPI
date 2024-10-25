@@ -3,6 +3,7 @@ using CoinDesk.Model.Command;
 using CoinDesk.Model.Query;
 using CoinDesk.Model.Request;
 using MediatR;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CoinDesk.API.Controllers;
@@ -81,6 +82,26 @@ public class CurrencyController : ControllerBase
         {
             Id = id,
             Name = request.Name
+        });
+        return Ok(result);
+    }
+
+    /// <summary>
+    /// 刪除幣別
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    [HttpDelete]
+    [Route("{id}")]
+    public async Task<IActionResult> DeleteCurrency([FromRoute] Guid id)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest();
+        }
+        var result = await _mediator.Send(new DeleteCurrencyCommand
+        {
+            Id = id
         });
         return Ok(result);
     }
