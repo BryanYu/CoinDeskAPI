@@ -4,7 +4,7 @@ public class PagedResultResponse<T>
 {
     public Pagination Pagination { get; set; }
     
-    public IEnumerable<T> Items { get; set; }
+    public T Data { get; set; }
 }
 
 public class Pagination

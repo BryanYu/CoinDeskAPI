@@ -1,7 +1,10 @@
-﻿using CoinDesk.Infrastructure.Model;
+﻿using CodeDesk.Service.Interfaces;
+using CoinDesk.Infrastructure.Model;
 using CoinDesk.Infrastructure.Repository.Base;
+using CoinDesk.Model.Enum;
 using CoinDesk.Model.Query;
 using CoinDesk.Model.Response;
+using CoinDesk.Model.Response.ThirdParty;
 using MediatR;
 
 namespace CoinDesk.Domain.QueryHandler;
@@ -9,33 +12,69 @@ namespace CoinDesk.Domain.QueryHandler;
 public class GetCurrencyQueryHandler : IRequestHandler<GetCurrencyQuery, PagedResultResponse<CurrencyResponse>>
 {
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ICurrencyService _currencyService;
 
-    public GetCurrencyQueryHandler(IUnitOfWork unitOfWork)
+    public GetCurrencyQueryHandler(IUnitOfWork unitOfWork, ICurrencyService currencyService)
     {
         _unitOfWork = unitOfWork;
+        _currencyService = currencyService;
     }
     
     public async Task<PagedResultResponse<CurrencyResponse>> Handle(GetCurrencyQuery request, CancellationToken cancellationToken)
     {
+        var currencyResult = await this._currencyService.GetCurrencyPriceAsync();
+        if (currencyResult.apiStatus != ThirdPartyApiStatus.Success)
+        {
+            return new PagedResultResponse<CurrencyResponse>();
+        }
         var pagingParameter = new PaginationParameter
         {
             PageNumber = request.PageNumber,
             PageSize = request.PageSize
         };
-        var result = await _unitOfWork.CurrencyRepository.GetPagingAsync(pagingParameter: pagingParameter);
+        var queryResult = await _unitOfWork.CurrencyRepository.GetPagingAsync(pagingParameter: pagingParameter);
+
+        var currencyDetails = queryResult.Items.Select(item =>
+        {
+            if (currencyResult.currencyPrices.TryGetValue(item.CurrencyCode, out var currencyPrice))
+            {
+                return new CurrencyDetailResponse
+                {
+                    CurrencyCode = item.CurrencyCode,
+                    Rate = currencyPrice.Rate,
+                };
+            }
+            return new CurrencyDetailResponse
+            {
+                CurrencyCode = item.CurrencyCode,
+                Rate = 0m
+            };
+        });
+        
+        var currencyCodes = queryResult.Items.Select(item => item.CurrencyCode);
+        var updatedTime = ConvertUpdatedTime(currencyCodes, currencyResult.updatedTime, currencyResult.currencyPrices);
         return new PagedResultResponse<CurrencyResponse>
         {
             Pagination = new Pagination
             {
-                TotalRecords = result.TotalRecords,
+                TotalRecords = queryResult.TotalRecords,
                 PageNumber = request.PageNumber,
                 PageSize = request.PageSize,
             },
-            Items = result.Items.Select(item => new CurrencyResponse
+            Data = new CurrencyResponse
             {
-                Name = item.Name,
-                CurrencyCode = item.CurrencyCode.ToString()
-            })
+                Currencies = currencyDetails,
+                UpdatedTime = updatedTime
+            }
         };
+    }
+
+    private string ConvertUpdatedTime(IEnumerable<string> currencyCodes, string updatedTime, Dictionary<string, CurrencyPrice> currencyPrices)
+    {
+        if (currencyPrices.Keys.Any(currencyCodes.Contains) && DateTimeOffset.TryParse(updatedTime, out var parseUpdatedTime))
+        {
+            return parseUpdatedTime.ToOffset(TimeSpan.FromHours(8)).DateTime.ToString("yyyy/MM/dd HH:mm:ss");
+        }
+        return string.Empty;
     }
 }

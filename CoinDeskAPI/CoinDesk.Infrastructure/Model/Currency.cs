@@ -28,7 +28,6 @@ public class Currency : BaseModel
     /// </summary>
     [Required]
     [Comment("幣別代碼")]
-    [Column(TypeName = "char(3)")]
-    public CurrencyCode CurrencyCode { get; set; }
+    public string CurrencyCode { get; set; }
 
 }

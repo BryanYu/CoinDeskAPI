@@ -1,3 +1,5 @@
+using CodeDesk.Service.Implements;
+using CodeDesk.Service.Interfaces;
 using CoinDesk.Domain.QueryHandler;
 using CoinDesk.Infrastructure;
 using CoinDesk.Infrastructure.Repository.Base;
@@ -24,7 +26,10 @@ public class Program
         builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(GetCurrencyQueryHandler).Assembly));
 
         builder.Services.Configure<PaginationConfig>(builder.Configuration.GetSection("PaginationConfig"));
-        
+        builder.Services.Configure<CoinDeskConfig>(builder.Configuration.GetSection("CoinDeskConfig"));
+
+        builder.Services.AddScoped<ICurrencyService, CoinDeskService>();
+        builder.Services.AddHttpClient();
         var app = builder.Build();
         if (app.Environment.IsDevelopment())
         {
