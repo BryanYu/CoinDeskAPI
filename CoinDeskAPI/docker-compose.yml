@@ -1,0 +1,25 @@
+﻿name: coindeskapi-docker
+
+services:
+  coindesk-api:
+    image: coindeskapi:latest
+    container_name: coindesk-api
+    build:
+      context: .
+      dockerfile: CoinDesk.API/Dockerfile
+    ports:
+      - 8080:8080
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Docker
+    depends_on:
+      - sql-server-docker
+
+  sql-server-docker:
+    hostname: sql-server-docker
+    container_name: sql-server-docker
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    ports:
+      - 1433:1433
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=Aa123456

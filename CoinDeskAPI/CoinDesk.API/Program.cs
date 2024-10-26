@@ -73,11 +73,17 @@ public class Program
         });
         app.UseSerilogRequestLogging();
         app.UseMiddleware<HttpLoggingMiddleware>();
-        if (app.Environment.IsDevelopment())
+        if (app.Environment.IsDevelopment() || app.Environment.IsEnvironment("Docker"))
         {
+            using (var scope = app.Services.CreateScope())
+            {
+                var dbContext = scope.ServiceProvider.GetRequiredService<CurrencyDbContext>();
+                dbContext.Database.Migrate();
+            }
             app.UseSwagger();
             app.UseSwaggerUI();
         }
+
         app.UseHttpsRedirection();
         app.UseAuthorization();
         app.MapControllers();
