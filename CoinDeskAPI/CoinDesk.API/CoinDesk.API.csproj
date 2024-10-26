@@ -5,6 +5,7 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
 
     <ItemGroup>
@@ -23,6 +24,12 @@
       <ProjectReference Include="..\CoinDesk.Domain\CoinDesk.Domain.csproj" />
       <ProjectReference Include="..\CoinDesk.Infrastructure\CoinDesk.Infrastructure.csproj" />
       <ProjectReference Include="..\CoinDesk.Model\CoinDesk.Model.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="..\.dockerignore">
+        <Link>.dockerignore</Link>
+      </Content>
     </ItemGroup>
 
 </Project>
