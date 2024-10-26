@@ -113,6 +113,6 @@ public class CurrencyController : ControllerBase
     [Route("Exception")]
     public async Task<IActionResult> Exception()
     {
-        throw new ArgumentException("Argument Excpetion");
+        throw new ArgumentException("Argument Exception");
     }
 }

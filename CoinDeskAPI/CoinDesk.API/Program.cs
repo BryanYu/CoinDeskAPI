@@ -10,7 +10,6 @@ using CoinDesk.Infrastructure.Repository.Interfaces;
 using CoinDesk.Model.Config;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
-using LoggingHttpMessageHandler = CoinDesk.API.Handler.LoggingHttpMessageHandler;
 
 namespace CoinDesk.API;
 
@@ -23,6 +22,7 @@ public class Program
         Log.Information("Application Startup");
 
         builder.Services.AddControllers();
+        builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen(options =>
         {
@@ -42,6 +42,7 @@ public class Program
         builder.Services.AddProblemDetails();
         builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
         builder.Services.AddScoped<ICurrencyService, CoinDeskService>();
+        builder.Services.AddSingleton<ILocalizeService, LocalizeService>();
         builder.Services.AddSerilog();
         builder.Services.AddHttpClient("LoggingHttpClient")
             .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler())
@@ -51,6 +52,17 @@ public class Program
                 return new LoggingHttpMessageHandler(logger);
             });
         var app = builder.Build();
+
+        var requestLocalizationOptions = new RequestLocalizationOptions
+        {
+            ApplyCurrentCultureToResponseHeaders = true
+        };
+        app.UseRequestLocalization(item =>
+        {
+            item.ApplyCurrentCultureToResponseHeaders = true;
+            var supportedCultures = new[] { "zh-Hant", "en-US", "zh-Hans" };
+            item.SetDefaultCulture(supportedCultures[0]).AddSupportedUICultures(supportedCultures);
+        });
         app.UseExceptionHandler();
         app.Use(async (httpContext, next) =>
         {
