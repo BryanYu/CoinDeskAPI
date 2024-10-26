@@ -8,7 +8,10 @@ using CoinDesk.Infrastructure.Repository.Implements;
 using CoinDesk.Infrastructure.Repository.Interfaces;
 using CoinDesk.Model.Config;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Http.Logging;
 using Serilog;
+using ILogger = Microsoft.Extensions.Logging.ILogger;
+using LoggingHttpMessageHandler = CoinDesk.API.Handler.LoggingHttpMessageHandler;
 
 namespace CoinDesk.API;
 
@@ -33,9 +36,14 @@ public class Program
         builder.Services.Configure<CoinDeskConfig>(builder.Configuration.GetSection("CoinDeskConfig"));
 
         builder.Services.AddScoped<ICurrencyService, CoinDeskService>();
-        builder.Services.AddHttpClient();
         builder.Services.AddSerilog();
-        
+        builder.Services.AddHttpClient("LoggingHttpClient")
+            .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler())
+            .AddHttpMessageHandler((serviceProvider) =>
+            {
+                var logger = serviceProvider.GetRequiredService<ILogger<LoggingHttpMessageHandler>>();
+                return new LoggingHttpMessageHandler(logger);
+            });
         var app = builder.Build();
         app.Use(async (httpContext, next) =>
         {
