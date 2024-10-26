@@ -29,7 +29,16 @@ public class HttpLoggingMiddleware
         using var responseBody = new MemoryStream();
         context.Response.Body = responseBody;
 
-        await _next(context);
+        try
+        {
+            await _next(context);
+        }
+        catch (Exception ex)
+        {
+            context.Response.Body = originalResponseBody;
+            throw;
+        }
+
 
         context.Response.Headers.TryAdd("RequestId", requestId);
         responseBody.Seek(0, SeekOrigin.Begin);

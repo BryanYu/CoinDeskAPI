@@ -1,5 +1,6 @@
 using CodeDesk.Service.Implements;
 using CodeDesk.Service.Interfaces;
+using CoinDesk.API.Handler;
 using CoinDesk.API.Middleware;
 using CoinDesk.Domain.QueryHandler;
 using CoinDesk.Infrastructure;
@@ -8,9 +9,7 @@ using CoinDesk.Infrastructure.Repository.Implements;
 using CoinDesk.Infrastructure.Repository.Interfaces;
 using CoinDesk.Model.Config;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Http.Logging;
 using Serilog;
-using ILogger = Microsoft.Extensions.Logging.ILogger;
 using LoggingHttpMessageHandler = CoinDesk.API.Handler.LoggingHttpMessageHandler;
 
 namespace CoinDesk.API;
@@ -34,7 +33,8 @@ public class Program
 
         builder.Services.Configure<PaginationConfig>(builder.Configuration.GetSection("PaginationConfig"));
         builder.Services.Configure<CoinDeskConfig>(builder.Configuration.GetSection("CoinDeskConfig"));
-
+        builder.Services.AddProblemDetails();
+        builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
         builder.Services.AddScoped<ICurrencyService, CoinDeskService>();
         builder.Services.AddSerilog();
         builder.Services.AddHttpClient("LoggingHttpClient")
@@ -45,12 +45,13 @@ public class Program
                 return new LoggingHttpMessageHandler(logger);
             });
         var app = builder.Build();
+        app.UseExceptionHandler();
         app.Use(async (httpContext, next) =>
         {
             var requestId = Guid.NewGuid().ToString();
             httpContext.Request.Headers.TryAdd("RequestId", requestId);
-            httpContext.Response.Headers.TryAdd("RequestId", requestId);
             await next();
+            httpContext.Response.Headers.TryAdd("RequestId", requestId);
         });
         app.UseSerilogRequestLogging();
         app.UseMiddleware<HttpLoggingMiddleware>();

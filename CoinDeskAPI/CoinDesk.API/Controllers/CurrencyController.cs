@@ -105,4 +105,15 @@ public class CurrencyController : ControllerBase
         });
         return Ok(result);
     }
+
+    /// <summary>
+    /// 測試Exception
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet]
+    [Route("Exception")]
+    public async Task<IActionResult> Exception()
+    {
+        throw new ArgumentException("Argument Excpetion");
+    }
 }
