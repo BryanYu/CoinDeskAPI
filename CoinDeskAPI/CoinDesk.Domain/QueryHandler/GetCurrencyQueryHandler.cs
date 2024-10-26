@@ -6,6 +6,7 @@ using CoinDesk.Model.Query;
 using CoinDesk.Model.Response;
 using CoinDesk.Model.Response.ThirdParty;
 using MediatR;
+using Microsoft.Extensions.Localization;
 
 namespace CoinDesk.Domain.QueryHandler;
 
@@ -13,11 +14,13 @@ public class GetCurrencyQueryHandler : IRequestHandler<GetCurrencyQuery, PagedRe
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly ICurrencyService _currencyService;
-
-    public GetCurrencyQueryHandler(IUnitOfWork unitOfWork, ICurrencyService currencyService)
+    private readonly ILocalizeService _localizeService;
+    
+    public GetCurrencyQueryHandler(IUnitOfWork unitOfWork, ICurrencyService currencyService, ILocalizeService localizeService)
     {
         _unitOfWork = unitOfWork;
         _currencyService = currencyService;
+        _localizeService = localizeService;
     }
     
     public async Task<PagedResultResponse<CurrencyResponse>> Handle(GetCurrencyQuery request, CancellationToken cancellationToken)
@@ -46,7 +49,7 @@ public class GetCurrencyQueryHandler : IRequestHandler<GetCurrencyQuery, PagedRe
             return new CurrencyDetailResponse
             {
                 Id = item.Id,
-                Name = item.Name,
+                Name = _localizeService.GetLocalizedString($"Currency_{item.CurrencyCode}"),
                 CurrencyCode = item.CurrencyCode,
                 Rate = rate
             };

@@ -18,6 +18,7 @@ public class GetCurrencyQueryHandlerTests
     private Mock<IUnitOfWork> _unitOfWorkMock;
     private Mock<ICurrencyRepository> _currencyRepositoryMock;
     private Mock<ICurrencyService> _currencyServiceMock;
+    private Mock<ILocalizeService> _localizeServiceMock;
     
     [SetUp]
     public void SetUp()
@@ -25,9 +26,11 @@ public class GetCurrencyQueryHandlerTests
         _currencyRepositoryMock = new Mock<ICurrencyRepository>();
         _currencyServiceMock = new Mock<ICurrencyService>();
         _unitOfWorkMock = new Mock<IUnitOfWork>();
+        _localizeServiceMock = new Mock<ILocalizeService>();
         _unitOfWorkMock.Setup(item => item.CurrencyRepository).Returns(_currencyRepositoryMock.Object);
         _unitOfWorkMock.Setup(item => item.SaveChangesAsync()).ReturnsAsync(1);
-        _getCurrencyQueryHandler = new GetCurrencyQueryHandler(_unitOfWorkMock.Object, _currencyServiceMock.Object);
+        _getCurrencyQueryHandler = new GetCurrencyQueryHandler(_unitOfWorkMock.Object, _currencyServiceMock.Object,
+            _localizeServiceMock.Object);
     }
 
     [Test]
