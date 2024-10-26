@@ -1,5 +1,6 @@
 using CodeDesk.Service.Implements;
 using CodeDesk.Service.Interfaces;
+using CoinDesk.API.Extension;
 using CoinDesk.API.Handler;
 using CoinDesk.API.Middleware;
 using CoinDesk.Domain.QueryHandler;
@@ -73,17 +74,17 @@ public class Program
         });
         app.UseSerilogRequestLogging();
         app.UseMiddleware<HttpLoggingMiddleware>();
-        if (app.Environment.IsDevelopment() || app.Environment.IsEnvironment("Docker"))
+        if (app.Environment.IsDevelopment() || app.Environment.IsDocker())
         {
-            using (var scope = app.Services.CreateScope())
-            {
-                var dbContext = scope.ServiceProvider.GetRequiredService<CurrencyDbContext>();
-                dbContext.Database.Migrate();
-            }
             app.UseSwagger();
             app.UseSwaggerUI();
         }
-
+        if (app.Environment.IsDocker())
+        {
+            using var scope = app.Services.CreateScope();
+            var dbContext = scope.ServiceProvider.GetRequiredService<CurrencyDbContext>();
+            dbContext.Database.Migrate();
+        }
         app.UseHttpsRedirection();
         app.UseAuthorization();
         app.MapControllers();
