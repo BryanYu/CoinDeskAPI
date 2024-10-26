@@ -25,39 +25,21 @@ public class Program
         builder.Services.AddControllers();
         builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
         builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen(options =>
-        {
-            var apiXmlPath = Path.Combine(AppContext.BaseDirectory, "CoinDesk.API.xml");
-            var modelXmlPath = Path.Combine(AppContext.BaseDirectory, "CoinDesk.Model.xml");
-            options.IncludeXmlComments(apiXmlPath);
-            options.IncludeXmlComments(modelXmlPath);
-        });
         builder.Services.AddDbContext<CurrencyDbContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("CurrencyDB")));
-        builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-        builder.Services.AddScoped<ICurrencyRepository, CurrencyRepository>();
         builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(GetCurrencyQueryHandler).Assembly));
-
-        builder.Services.Configure<PaginationConfig>(builder.Configuration.GetSection("PaginationConfig"));
-        builder.Services.Configure<CoinDeskConfig>(builder.Configuration.GetSection("CoinDeskConfig"));
         builder.Services.AddProblemDetails();
         builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
-        builder.Services.AddScoped<ICurrencyService, CoinDeskService>();
-        builder.Services.AddSingleton<ILocalizeService, LocalizeService>();
         builder.Services.AddSerilog();
-        builder.Services.AddHttpClient("LoggingHttpClient")
-            .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler())
-            .AddHttpMessageHandler((serviceProvider) =>
-            {
-                var logger = serviceProvider.GetRequiredService<ILogger<LoggingHttpMessageHandler>>();
-                return new LoggingHttpMessageHandler(logger);
-            });
+        
+        builder.Services.AddCustomSwaagerGen();
+        builder.Services.AddCustomRepositoy();
+        builder.Services.AddCustomConfigure(builder.Configuration);
+        builder.Services.AddCustomService();
+        builder.Services.AddCustomHttpClient();
+        
         var app = builder.Build();
 
-        var requestLocalizationOptions = new RequestLocalizationOptions
-        {
-            ApplyCurrentCultureToResponseHeaders = true
-        };
         app.UseRequestLocalization(item =>
         {
             item.ApplyCurrentCultureToResponseHeaders = true;
