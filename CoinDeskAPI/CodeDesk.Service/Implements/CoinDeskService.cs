@@ -61,6 +61,12 @@ public class CoinDeskService : ICurrencyService
         {
             return (ThirdPartyApiStatus.Failed, default(T));
         }
+
+        var responseContent = await response.Content.ReadAsStringAsync();
+        if (string.IsNullOrEmpty(responseContent))
+        {
+            return (ThirdPartyApiStatus.Failed, default(T));
+        }
         var result = await response.Content.ReadFromJsonAsync<T>();
         if (result == null)
         {
