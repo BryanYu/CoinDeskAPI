@@ -24,7 +24,13 @@ public class Program
 
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen();
+        builder.Services.AddSwaggerGen(options =>
+        {
+            var apiXmlPath = Path.Combine(AppContext.BaseDirectory, "CoinDesk.API.xml");
+            var modelXmlPath = Path.Combine(AppContext.BaseDirectory, "CoinDesk.Model.xml");
+            options.IncludeXmlComments(apiXmlPath);
+            options.IncludeXmlComments(modelXmlPath);
+        });
         builder.Services.AddDbContext<CurrencyDbContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("CurrencyDB")));
         builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
