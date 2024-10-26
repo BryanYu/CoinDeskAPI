@@ -16,7 +16,7 @@ public class CoinDeskService : ICurrencyService
     public CoinDeskService(IHttpClientFactory httpClientFactory, IOptions<CoinDeskConfig> coinDeskConfig)
     {
         _coinDeskConfig = coinDeskConfig;
-        this._httpClient = httpClientFactory.CreateClient();
+        this._httpClient = httpClientFactory.CreateClient("LoggingHttpClient");
     }
 
     public async Task<(ThirdPartyApiStatus apiStatus,string updatedTime, Dictionary<string, CurrencyPrice> currencyPrices)> GetCurrencyPriceAsync()
