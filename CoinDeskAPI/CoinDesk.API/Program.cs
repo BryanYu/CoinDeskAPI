@@ -20,8 +20,8 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
         Log.Logger = new LoggerConfiguration().ReadFrom.Configuration(builder.Configuration).CreateLogger();
-        Log.Information("Application Startup");
-
+        Log.Information($"Application Startup, Environment:{builder.Environment.EnvironmentName}");
+        
         builder.Services.AddControllers();
         builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
         builder.Services.AddEndpointsApiExplorer();
@@ -39,21 +39,9 @@ public class Program
         builder.Services.AddCustomHttpClient();
         
         var app = builder.Build();
-
-        app.UseRequestLocalization(item =>
-        {
-            item.ApplyCurrentCultureToResponseHeaders = true;
-            var supportedCultures = new[] { "zh-Hant", "en-US", "zh-Hans" };
-            item.SetDefaultCulture(supportedCultures[0]).AddSupportedUICultures(supportedCultures);
-        });
+        app.UseCustomRequestLocalization();
         app.UseExceptionHandler();
-        app.Use(async (httpContext, next) =>
-        {
-            var requestId = Guid.NewGuid().ToString();
-            httpContext.Request.Headers.TryAdd("RequestId", requestId);
-            await next();
-            httpContext.Response.Headers.TryAdd("RequestId", requestId);
-        });
+        app.UseCustomRequestIdOnHeader();
         app.UseSerilogRequestLogging();
         app.UseMiddleware<HttpLoggingMiddleware>();
         if (app.Environment.IsDevelopment() || app.Environment.IsDocker())
