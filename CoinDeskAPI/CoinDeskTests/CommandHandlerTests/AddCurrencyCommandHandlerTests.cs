@@ -14,17 +14,17 @@ namespace CoinDeskTests.CommandHandlerTests;
 public class AddCurrencyCommandHandlerTests
 {
     private AddCurrencyCommandHandler _addCurrencyCommandHandler;
-    private Mock<IUnitOfWork> _unitWorkMock;
+    private Mock<IUnitOfWork> _unitOfWorkMock;
     private Mock<ICurrencyRepository> _currencyRepositoryMock;
     
     [SetUp]
     public void SetUp()
     {
         _currencyRepositoryMock = new Mock<ICurrencyRepository>();
-        _unitWorkMock = new Mock<IUnitOfWork>();
-        _unitWorkMock.Setup(item => item.CurrencyRepository).Returns(_currencyRepositoryMock.Object);
-        _unitWorkMock.Setup(item => item.SaveChangesAsync()).ReturnsAsync(1);
-        _addCurrencyCommandHandler = new AddCurrencyCommandHandler(_unitWorkMock.Object);
+        _unitOfWorkMock = new Mock<IUnitOfWork>();
+        _unitOfWorkMock.Setup(item => item.CurrencyRepository).Returns(_currencyRepositoryMock.Object);
+        _unitOfWorkMock.Setup(item => item.SaveChangesAsync()).ReturnsAsync(1);
+        _addCurrencyCommandHandler = new AddCurrencyCommandHandler(_unitOfWorkMock.Object);
     }
     
     [Test]
@@ -64,6 +64,6 @@ public class AddCurrencyCommandHandlerTests
         // assert
         expected.Should().Be(actual);
         this._currencyRepositoryMock.Verify(item => item.AddAsync(It.IsAny<Currency>()), Times.Once);
-        this._unitWorkMock.Verify(item => item.SaveChangesAsync(), Times.Once);
+        this._unitOfWorkMock.Verify(item => item.SaveChangesAsync(), Times.Once);
     }
 }

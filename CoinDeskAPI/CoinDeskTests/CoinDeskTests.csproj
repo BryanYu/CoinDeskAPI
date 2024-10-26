@@ -24,10 +24,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="QueryHandlerTests\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\CoinDesk.Domain\CoinDesk.Domain.csproj" />
     </ItemGroup>
 
