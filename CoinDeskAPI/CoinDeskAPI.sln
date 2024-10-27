@@ -19,6 +19,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		docker-compose.yml = docker-compose.yml
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoinDesk.Utility", "CoinDesk.Utility\CoinDesk.Utility.csproj", "{09959CD9-5192-4BF8-A307-615A015E145E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -49,6 +51,10 @@ Global
 		{0487CB38-6827-47D9-9371-14724836A523}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0487CB38-6827-47D9-9371-14724836A523}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0487CB38-6827-47D9-9371-14724836A523}.Release|Any CPU.Build.0 = Release|Any CPU
+		{09959CD9-5192-4BF8-A307-615A015E145E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{09959CD9-5192-4BF8-A307-615A015E145E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{09959CD9-5192-4BF8-A307-615A015E145E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{09959CD9-5192-4BF8-A307-615A015E145E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{0487CB38-6827-47D9-9371-14724836A523} = {C24D38E4-BC21-442B-B465-7CA2E307EA7C}

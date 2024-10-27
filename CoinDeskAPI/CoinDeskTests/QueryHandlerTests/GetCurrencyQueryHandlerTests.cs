@@ -71,10 +71,10 @@ public class GetCurrencyQueryHandlerTests
         _currencyRepositoryMock.Setup(item => item.GetPagingAsync(null,
                 It.IsAny<Func<IQueryable<Currency>, IOrderedQueryable<Currency>>>(), It.IsAny<PaginationParameter>()))
             .ReturnsAsync(pagedQueryResultMock);
-        
-        _localizeServiceMock.Setup(item => item.GetLocalizedString("Currency_USD")).Returns("美金");
-        _localizeServiceMock.Setup(item => item.GetLocalizedString("Currency_GBP")).Returns("英鎊");
-        _localizeServiceMock.Setup(item => item.GetLocalizedString("Currency_EUR")).Returns("歐元");
+
+        _localizeServiceMock.Setup(item => item.GetLocalizedString(LocalizeType.Currency, "USD")).Returns("美金");
+        _localizeServiceMock.Setup(item => item.GetLocalizedString(LocalizeType.Currency, "GBP")).Returns("英鎊");
+        _localizeServiceMock.Setup(item => item.GetLocalizedString(LocalizeType.Currency, "EUR")).Returns("歐元");
             
         var expected = new PagedResultResponse<CurrencyResponse>
         {

@@ -24,6 +24,7 @@
       <ProjectReference Include="..\CoinDesk.Domain\CoinDesk.Domain.csproj" />
       <ProjectReference Include="..\CoinDesk.Infrastructure\CoinDesk.Infrastructure.csproj" />
       <ProjectReference Include="..\CoinDesk.Model\CoinDesk.Model.csproj" />
+      <ProjectReference Include="..\CoinDesk.Utility\CoinDesk.Utility.csproj" />
     </ItemGroup>
 
     <ItemGroup>

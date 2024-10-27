@@ -27,4 +27,37 @@
     <data name="Currency_EUR" xml:space="preserve">
         <value>欧元</value>
     </data>
+    <data name="ApiResponseStatus_Success" xml:space="preserve">
+        <value>执行成功</value>
+    </data>
+    <data name="ApiResponseStatus_Error" xml:space="preserve">
+        <value>执行失败</value>
+    </data>
+    <data name="ApiResponseStatus_ModelValidError" xml:space="preserve">
+        <value>栏位验证错误</value>
+    </data>
+    <data name="ModelValidError_PageSizeMustBeGreaterThanZero" xml:space="preserve">
+        <value>笔数必须大于0</value>
+    </data>
+    <data name="ModelValidError_PageNumberMustBeGreaterThanZero" xml:space="preserve">
+        <value>页数必须大于0</value>
+    </data>
+    <data name="ModelValidError_PageSizeCantOverSetting" xml:space="preserve">
+        <value>笔数不能超过{0}</value>
+    </data>
+    <data name="ApiResponseStatus_InternalServerError" xml:space="preserve">
+        <value>服务器错误</value>
+    </data>
+    <data name="ModelValidError_CurrencyCodeRequired" xml:space="preserve">
+        <value>币别代码为必填</value>
+    </data>
+    <data name="ModelValidError_CurrencyCodeLenghtMax3" xml:space="preserve">
+        <value>币别代码字元最多3个</value>
+    </data>
+    <data name="ModelValidError_CurrencyNameRequired" xml:space="preserve">
+        <value>货币别名必填</value>
+    </data>
+    <data name="ModelValidError_CurrencyNameLengthMax20" xml:space="preserve">
+        <value>币别名称字元最多20个</value>
+    </data>
 </root>

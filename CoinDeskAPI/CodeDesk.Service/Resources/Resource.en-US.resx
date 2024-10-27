@@ -27,4 +27,37 @@
     <data name="Currency_EUR" xml:space="preserve">
         <value>Euro Dollars</value>
     </data>
+    <data name="ApiResponseStatus_Success" xml:space="preserve">
+        <value>Success</value>
+    </data>
+    <data name="ApiResponseStatus_Error" xml:space="preserve">
+        <value>Failed</value>
+    </data>
+    <data name="ApiResponseStatus_ModelValidError" xml:space="preserve">
+        <value>Model Valid Fail</value>
+    </data>
+    <data name="ModelValidError_PageSizeMustBeGreaterThanZero" xml:space="preserve">
+        <value>PageSize Must Be Greater Than Zero</value>
+    </data>
+    <data name="ModelValidError_PageNumberMustBeGreaterThanZero" xml:space="preserve">
+        <value>PageNumber Must Be Greater Than Zero</value>
+    </data>
+    <data name="ModelValidError_PageSizeCantOverSetting" xml:space="preserve">
+        <value>PageSize Can't Over Than {0}</value>
+    </data>
+    <data name="ApiResponseStatus_InternalServerError" xml:space="preserve">
+        <value>Internal Server Error</value>
+    </data>
+    <data name="ModelValidError_CurrencyCodeRequired" xml:space="preserve">
+        <value>CurrencyCode Required</value>
+    </data>
+    <data name="ModelValidError_CurrencyCodeLenghtMax3" xml:space="preserve">
+        <value>CurrencyCode Max Length is 3</value>
+    </data>
+    <data name="ModelValidError_CurrencyNameRequired" xml:space="preserve">
+        <value>CurrencyName Required</value>
+    </data>
+    <data name="ModelValidError_CurrencyNameLengthMax20" xml:space="preserve">
+        <value>CurrencyName Max Length is 20</value>
+    </data>
 </root>

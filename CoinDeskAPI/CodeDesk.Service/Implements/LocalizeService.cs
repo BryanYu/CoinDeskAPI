@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using CodeDesk.Service.Interfaces;
+using CoinDesk.Model.Enum;
 using Microsoft.Extensions.Localization;
 
 namespace CodeDesk.Service.Implements;
@@ -15,8 +16,8 @@ public class LocalizeService : ILocalizeService
         _localizer = factory.Create("Resource", assemblyName.Name);
     }
     
-    public string GetLocalizedString(string key)
+    public string GetLocalizedString(LocalizeType type,  string key)
     {
-        return _localizer.GetString(key);
+        return _localizer.GetString($"{type.ToString()}_{key}");
     }
 }

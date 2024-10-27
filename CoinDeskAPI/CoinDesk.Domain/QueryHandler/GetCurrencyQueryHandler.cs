@@ -46,10 +46,11 @@ public class GetCurrencyQueryHandler : IRequestHandler<GetCurrencyQuery, PagedRe
             {
                 rate = currencyPrice.Rate;
             }
+
             return new CurrencyDetailResponse
             {
                 Id = item.Id,
-                Name = _localizeService.GetLocalizedString($"Currency_{item.CurrencyCode}"),
+                Name = _localizeService.GetLocalizedString(LocalizeType.Currency, item.CurrencyCode),
                 CurrencyCode = item.CurrencyCode,
                 Rate = rate
             };

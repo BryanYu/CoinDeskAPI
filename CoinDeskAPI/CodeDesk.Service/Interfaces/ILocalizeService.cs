@@ -1,6 +1,8 @@
-﻿namespace CodeDesk.Service.Interfaces;
+﻿using CoinDesk.Model.Enum;
+
+namespace CodeDesk.Service.Interfaces;
 
 public interface ILocalizeService
 {
-    public string GetLocalizedString(string key);
+    string GetLocalizedString(LocalizeType type, string key);
 }
