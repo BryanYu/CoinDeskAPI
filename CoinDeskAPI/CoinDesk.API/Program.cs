@@ -20,18 +20,7 @@ public class Program
         Log.Logger = new LoggerConfiguration().ReadFrom.Configuration(builder.Configuration).CreateLogger();
         Log.Information($"Application Startup, Environment:{builder.Environment.EnvironmentName}");
 
-        builder.Services.AddControllers(options =>
-            {
-                options.Filters.Add<ModelValidateActionFilter>();
-                options.Filters.Add<GlobalResponseActionFilter>();
-            })
-            .AddJsonOptions(options =>
-            {
-                options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
-                options.JsonSerializerOptions.PropertyNameCaseInsensitive = false;
-                options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
-            });
-        builder.Services.Configure<ApiBehaviorOptions>(item => item.SuppressModelStateInvalidFilter = true);
+        
         builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddDbContext<CurrencyDbContext>(options =>
@@ -41,6 +30,7 @@ public class Program
         builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
         builder.Services.AddSerilog();
         
+        builder.Services.AddCustomController();
         builder.Services.AddCustomSwaagerGen();
         builder.Services.AddCustomRepositoy();
         builder.Services.AddCustomConfigure(builder.Configuration);
