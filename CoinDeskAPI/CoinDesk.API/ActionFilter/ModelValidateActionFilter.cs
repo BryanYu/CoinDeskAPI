@@ -35,7 +35,7 @@ public class ModelValidateActionFilter : IActionFilter
             var response = new BadRequestObjectResult(new ApiResponse<object>
             {
                 Errors = errors,
-                Data = null,
+                Result = null,
                 Status = ApiResponseStatus.ModelValidError,
                 Message = _localizeService.GetLocalizedString(LocalizeType.ApiResponseStatus, localizeKey)
             });

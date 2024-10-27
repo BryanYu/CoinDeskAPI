@@ -20,7 +20,11 @@ public class Program
         Log.Logger = new LoggerConfiguration().ReadFrom.Configuration(builder.Configuration).CreateLogger();
         Log.Information($"Application Startup, Environment:{builder.Environment.EnvironmentName}");
 
-        builder.Services.AddControllers(options => options.Filters.Add<ModelValidateActionFilter>())
+        builder.Services.AddControllers(options =>
+            {
+                options.Filters.Add<ModelValidateActionFilter>();
+                options.Filters.Add<GlobalResponseActionFilter>();
+            })
             .AddJsonOptions(options =>
             {
                 options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;

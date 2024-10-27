@@ -22,5 +22,5 @@ public class ApiResponse<T>
     /// <summary>
     /// 回傳的資料
     /// </summary>
-    public T Data { get; set; }
+    public T Result { get; set; }
 }

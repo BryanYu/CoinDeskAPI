@@ -9,7 +9,7 @@ public enum ApiResponseStatus
     /// 執行成功
     /// </summary>
     [LocalizeKey("Success")]
-    Success = 0,
+    Success = 1,
     
     /// <summary>
     /// 模型驗證錯誤
