@@ -12,6 +12,7 @@ COPY ["CodeDesk.Service/CodeDesk.Service.csproj", "CodeDesk.Service/"]
 COPY ["CoinDesk.Model/CoinDesk.Model.csproj", "CoinDesk.Model/"]
 COPY ["CoinDesk.Domain/CoinDesk.Domain.csproj", "CoinDesk.Domain/"]
 COPY ["CoinDesk.Infrastructure/CoinDesk.Infrastructure.csproj", "CoinDesk.Infrastructure/"]
+COPY ["CoinDesk.Utility/CoinDesk.Utility.csproj", "CoinDesk.Utility/"]
 RUN dotnet restore "CoinDesk.API/CoinDesk.API.csproj"
 COPY . .
 WORKDIR "/src/CoinDesk.API"
