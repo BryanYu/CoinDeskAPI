@@ -29,10 +29,6 @@ public class CurrencyController : ControllerBase
     [Route("")]
     public async Task<IActionResult> GetCurrency([FromQuery] GetCurrencyRequest request)
     {
-        if (!ModelState.IsValid)
-        {
-            return BadRequest();
-        }
         var response = await _mediator.Send(new GetCurrencyQuery
         {
             PageSize = request.PageSize,
@@ -50,10 +46,6 @@ public class CurrencyController : ControllerBase
     [Route("")]
     public async Task<IActionResult> AddCurrency([FromBody] AddCurrencyRequest request)
     {
-        if (!ModelState.IsValid)
-        {
-            return BadRequest();
-        }
         var result = await _mediator.Send(new AddCurrencyCommand
         {
             Name = request.Name,
@@ -72,11 +64,6 @@ public class CurrencyController : ControllerBase
     [Route("{id}")]
     public async Task<IActionResult> UpdateCurrency([FromRoute] Guid id, [FromBody] UpdateCurrencyRequest request)
     {
-        if (!ModelState.IsValid)
-        {
-            return BadRequest();
-        }
-
         var result = await _mediator.Send(new UpdateCurrencyCommand
         {
             Id = id,
@@ -94,10 +81,6 @@ public class CurrencyController : ControllerBase
     [Route("{id}")]
     public async Task<IActionResult> DeleteCurrency([FromRoute] Guid id)
     {
-        if (!ModelState.IsValid)
-        {
-            return BadRequest();
-        }
         var result = await _mediator.Send(new DeleteCurrencyCommand
         {
             Id = id

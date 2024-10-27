@@ -60,6 +60,42 @@ namespace CodeDesk.Service.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Failed.
+        /// </summary>
+        internal static string ApiResponseStatus_Error {
+            get {
+                return ResourceManager.GetString("ApiResponseStatus_Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Internal Server Error.
+        /// </summary>
+        internal static string ApiResponseStatus_InternalServerError {
+            get {
+                return ResourceManager.GetString("ApiResponseStatus_InternalServerError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Model Valid Fail.
+        /// </summary>
+        internal static string ApiResponseStatus_ModelValidError {
+            get {
+                return ResourceManager.GetString("ApiResponseStatus_ModelValidError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Success.
+        /// </summary>
+        internal static string ApiResponseStatus_Success {
+            get {
+                return ResourceManager.GetString("ApiResponseStatus_Success", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Euro Dollars.
         /// </summary>
         internal static string Currency_EUR {
@@ -83,6 +119,69 @@ namespace CodeDesk.Service.Resources {
         internal static string Currency_USD {
             get {
                 return ResourceManager.GetString("Currency_USD", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CurrencyCode Max Length is 3.
+        /// </summary>
+        internal static string ModelValidError_CurrencyCodeLenghtMax3 {
+            get {
+                return ResourceManager.GetString("ModelValidError_CurrencyCodeLenghtMax3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CurrencyCode Required.
+        /// </summary>
+        internal static string ModelValidError_CurrencyCodeRequired {
+            get {
+                return ResourceManager.GetString("ModelValidError_CurrencyCodeRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CurrencyName Max Length is 20.
+        /// </summary>
+        internal static string ModelValidError_CurrencyNameLengthMax20 {
+            get {
+                return ResourceManager.GetString("ModelValidError_CurrencyNameLengthMax20", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CurrencyName Required.
+        /// </summary>
+        internal static string ModelValidError_CurrencyNameRequired {
+            get {
+                return ResourceManager.GetString("ModelValidError_CurrencyNameRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PageNumber Must Be Greater Than Zero.
+        /// </summary>
+        internal static string ModelValidError_PageNumberMustBeGreaterThanZero {
+            get {
+                return ResourceManager.GetString("ModelValidError_PageNumberMustBeGreaterThanZero", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PageSize Can&apos;t Over Than {0}.
+        /// </summary>
+        internal static string ModelValidError_PageSizeCantOverSetting {
+            get {
+                return ResourceManager.GetString("ModelValidError_PageSizeCantOverSetting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PageSize Must Be Greater Than Zero.
+        /// </summary>
+        internal static string ModelValidError_PageSizeMustBeGreaterThanZero {
+            get {
+                return ResourceManager.GetString("ModelValidError_PageSizeMustBeGreaterThanZero", resourceCulture);
             }
         }
     }

@@ -60,6 +60,42 @@ namespace CodeDesk.Service.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 執行失敗.
+        /// </summary>
+        internal static string ApiResponseStatus_Error {
+            get {
+                return ResourceManager.GetString("ApiResponseStatus_Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 伺服器錯誤.
+        /// </summary>
+        internal static string ApiResponseStatus_InternalServerError {
+            get {
+                return ResourceManager.GetString("ApiResponseStatus_InternalServerError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 欄位驗證錯誤.
+        /// </summary>
+        internal static string ApiResponseStatus_ModelValidError {
+            get {
+                return ResourceManager.GetString("ApiResponseStatus_ModelValidError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 執行成功.
+        /// </summary>
+        internal static string ApiResponseStatus_Success {
+            get {
+                return ResourceManager.GetString("ApiResponseStatus_Success", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 歐元.
         /// </summary>
         internal static string Currency_EUR {
@@ -83,6 +119,69 @@ namespace CodeDesk.Service.Resources {
         internal static string Currency_USD {
             get {
                 return ResourceManager.GetString("Currency_USD", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 幣別代碼字元最多3個.
+        /// </summary>
+        internal static string ModelValidError_CurrencyCodeLenghtMax3 {
+            get {
+                return ResourceManager.GetString("ModelValidError_CurrencyCodeLenghtMax3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 幣別代碼為必填.
+        /// </summary>
+        internal static string ModelValidError_CurrencyCodeRequired {
+            get {
+                return ResourceManager.GetString("ModelValidError_CurrencyCodeRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 幣別名稱字元最多20個.
+        /// </summary>
+        internal static string ModelValidError_CurrencyNameLengthMax20 {
+            get {
+                return ResourceManager.GetString("ModelValidError_CurrencyNameLengthMax20", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 幣別名稱為必填.
+        /// </summary>
+        internal static string ModelValidError_CurrencyNameRequired {
+            get {
+                return ResourceManager.GetString("ModelValidError_CurrencyNameRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 頁數必須大於0.
+        /// </summary>
+        internal static string ModelValidError_PageNumberMustBeGreaterThanZero {
+            get {
+                return ResourceManager.GetString("ModelValidError_PageNumberMustBeGreaterThanZero", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 筆數不得超過{0}.
+        /// </summary>
+        internal static string ModelValidError_PageSizeCantOverSetting {
+            get {
+                return ResourceManager.GetString("ModelValidError_PageSizeCantOverSetting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 筆數必須大於0.
+        /// </summary>
+        internal static string ModelValidError_PageSizeMustBeGreaterThanZero {
+            get {
+                return ResourceManager.GetString("ModelValidError_PageSizeMustBeGreaterThanZero", resourceCulture);
             }
         }
     }

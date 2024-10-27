@@ -1,14 +1,12 @@
-using CodeDesk.Service.Implements;
-using CodeDesk.Service.Interfaces;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using CoinDesk.API.ActionFilter;
 using CoinDesk.API.Extension;
 using CoinDesk.API.Handler;
 using CoinDesk.API.Middleware;
 using CoinDesk.Domain.QueryHandler;
 using CoinDesk.Infrastructure;
-using CoinDesk.Infrastructure.Repository.Base;
-using CoinDesk.Infrastructure.Repository.Implements;
-using CoinDesk.Infrastructure.Repository.Interfaces;
-using CoinDesk.Model.Config;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 
@@ -21,8 +19,15 @@ public class Program
         var builder = WebApplication.CreateBuilder(args);
         Log.Logger = new LoggerConfiguration().ReadFrom.Configuration(builder.Configuration).CreateLogger();
         Log.Information($"Application Startup, Environment:{builder.Environment.EnvironmentName}");
-        
-        builder.Services.AddControllers();
+
+        builder.Services.AddControllers(options => options.Filters.Add<ModelValidateActionFilter>())
+            .AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+                options.JsonSerializerOptions.PropertyNameCaseInsensitive = false;
+                options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+            });
+        builder.Services.Configure<ApiBehaviorOptions>(item => item.SuppressModelStateInvalidFilter = true);
         builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddDbContext<CurrencyDbContext>(options =>
