@@ -13,7 +13,14 @@ public class AddRequestIdOnHeaderMiddleware
     {
         var requestId = Guid.NewGuid().ToString();
         context.Request.Headers.TryAdd("RequestId", requestId);
-        await _next(context);
-        context.Response.Headers.TryAdd("RequestId", requestId);
+        try
+        {
+            await _next(context);
+        }
+        catch (Exception ex)
+        {
+            context.Response.Headers.TryAdd("RequestId", requestId);
+            throw;
+        }
     }
 }
