@@ -2,6 +2,7 @@
 using CoinDesk.Model.Query;
 using CoinDesk.Model.Request;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CoinDesk.API.Controllers;
@@ -9,6 +10,7 @@ namespace CoinDesk.API.Controllers;
 /// <summary>
 /// 幣別資訊API
 /// </summary>
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class CurrencyController : ControllerBase

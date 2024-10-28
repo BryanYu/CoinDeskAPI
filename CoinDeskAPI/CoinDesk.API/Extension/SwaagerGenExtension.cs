@@ -15,6 +15,26 @@ public static class SwaagerGenExtension
             options.IncludeXmlComments(modelXmlPath);
             options.OperationFilter<AcceptLanguageHeaderOperationFilter>();
             
+            
+            options.AddSecurityDefinition("bearerAuth", new OpenApiSecurityScheme
+            {
+                Type = SecuritySchemeType.Http,
+                Scheme = "bearer",
+                BearerFormat = "JWT",
+                Description = "JWT Authorization header using the Bearer scheme."
+            });
+
+            var requirement = new OpenApiSecurityRequirement();
+            requirement.Add(new OpenApiSecurityScheme
+                {
+                    Reference = new OpenApiReference
+                    {
+                        Type = ReferenceType.SecurityScheme, Id = "bearerAuth"
+                    }
+                },
+                new string[] { }
+            );
+            options.AddSecurityRequirement(requirement);
         });
         return services;
     } 
