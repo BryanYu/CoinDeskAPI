@@ -32,7 +32,7 @@ public class GlobalExceptionHandler : IExceptionHandler
         httpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
         httpContext.Request.ContentType = "application/json";
 
-        var message = _hostEnvironment.IsProduction()
+        var message = _hostEnvironment.IsDevelopment()
             ? exception.Message
             : _localizeService.GetLocalizedString(LocalizeType.ApiResponseStatus,
                 ApiResponseStatus.InternalServerError.GetLocalizeKey());
