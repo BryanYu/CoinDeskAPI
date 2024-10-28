@@ -89,6 +89,7 @@ GO
 
 由於mssqllocaldb不支援遠端連線，所以佈署在Docker的api專案無法連線至本機的mssqllocaldb，我改用docker compose建立一個sql server的container，讓api專案連到這個container中，並在應用程式啟動時自動執行migrations建立資料庫
 
+
 docker-compose.yaml內容如下
 ```
 name: coindeskapi-docker
@@ -123,6 +124,8 @@ services:
 cd .\CoinDeskAPI\
 docker compose up -d --build
 ```
+
+PS. 因container資料庫啟動時需要初始化設定，若API專案的Container啟動失敗，請確認資料庫container已經啟動完成後，再重新啟動API的container
 
 啟動瀏覽器並連線至[swagger](http://localhost:8080/swagger/index.html)，即可查看swagger文件
 
