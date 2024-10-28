@@ -34,13 +34,16 @@ public class GetCurrencyQueryHandlerTests
     }
 
     [Test]
-    public async Task GetCurrencyQueryHandler_GetCurrencyPrice_WhenApiFailed_ReturnEmptyResponse()
+    public async Task GetCurrencyQueryHandler_GetCurrencyPrice_WhenApiFailed_ReturnThirdPartyApiError()
     {
         // arrange 
         var returnCurrencyPriceMock = ValueTuple.Create(ThirdPartyApiStatus.Failed, string.Empty,
             new Dictionary<string, CurrencyPrice>());
         this._currencyServiceMock.Setup(item => item.GetCurrencyPriceAsync()).ReturnsAsync(returnCurrencyPriceMock);
-        var expected = new PagedResultResponse<CurrencyResponse>();
+        var expected = new HandlerResponse
+        {
+            Status = ApiResponseStatus.ThirdPartyApiError
+        };
 
         // actual 
         var actual = await _getCurrencyQueryHandler.Handle(new GetCurrencyQuery(), CancellationToken.None);
@@ -75,24 +78,28 @@ public class GetCurrencyQueryHandlerTests
         _localizeServiceMock.Setup(item => item.GetLocalizedString(LocalizeType.Currency, "USD")).Returns("美金");
         _localizeServiceMock.Setup(item => item.GetLocalizedString(LocalizeType.Currency, "GBP")).Returns("英鎊");
         _localizeServiceMock.Setup(item => item.GetLocalizedString(LocalizeType.Currency, "EUR")).Returns("歐元");
-            
-        var expected = new PagedResultResponse<CurrencyResponse>
+
+        var expected = new HandlerResponse
         {
-            Pagination = new Pagination
+            Status = ApiResponseStatus.Success,
+            Data = new PagedResultResponse<CurrencyResponse>
             {
-                TotalRecords = 3,
-                PageNumber = 1,
-                PageSize = 10,
-            },
-            Data = new CurrencyResponse
-            {
-                Currencies = new List<CurrencyDetailResponse>
+                Pagination = new Pagination
                 {
-                    new CurrencyDetailResponse { Id = usdId, Name = "美金", CurrencyCode = "USD", Rate = 1m },
-                    new CurrencyDetailResponse { Id = gbpId, Name = "英鎊", CurrencyCode = "GBP", Rate = 2m },
-                    new CurrencyDetailResponse { Id = eurId, Name = "歐元", CurrencyCode = "EUR", Rate = 3m },
+                    TotalRecords = 3,
+                    PageNumber = 1,
+                    PageSize = 10,
                 },
-                UpdatedTime = "2024/10/27 00:00:00"
+                Data = new CurrencyResponse
+                {
+                    Currencies = new List<CurrencyDetailResponse>
+                    {
+                        new CurrencyDetailResponse { Id = usdId, Name = "美金", CurrencyCode = "USD", Rate = 1m },
+                        new CurrencyDetailResponse { Id = gbpId, Name = "英鎊", CurrencyCode = "GBP", Rate = 2m },
+                        new CurrencyDetailResponse { Id = eurId, Name = "歐元", CurrencyCode = "EUR", Rate = 3m },
+                    },
+                    UpdatedTime = "2024/10/27 00:00:00"
+                }
             }
         };
         

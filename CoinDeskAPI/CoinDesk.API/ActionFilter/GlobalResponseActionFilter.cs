@@ -1,4 +1,6 @@
-﻿using CodeDesk.Service.Interfaces;
+﻿using System.Collections.Concurrent;
+using System.Text.Json;
+using CodeDesk.Service.Interfaces;
 using CoinDesk.Model.Enum;
 using CoinDesk.Model.Response;
 using CoinDesk.Utility;
@@ -18,20 +20,33 @@ public class GlobalResponseActionFilter : IResultFilter
     
     public void OnResultExecuting(ResultExecutingContext context)
     {
-        if (context.Result is ObjectResult objectResult && objectResult.StatusCode >= 200 && objectResult.StatusCode < 300)
+        var isExist = context.HttpContext.Items.TryGetValue("IsGenerateResponse", out var isGenerateResponse);
+        if (isExist && isGenerateResponse.ToString() == bool.TrueString)
         {
-            var apiResponse = new ApiResponse<object>
-            {
-                Status = ApiResponseStatus.Success,
-                Message = _localizeService.GetLocalizedString(LocalizeType.ApiResponseStatus,
-                    ApiResponseStatus.Success.GetLocalizeKey()),
-                Result = objectResult.Value,
-            };
-            context.Result = new ObjectResult(apiResponse)
-            {
-                StatusCode = objectResult.StatusCode
-            };
+            return;
         }
+
+        if (context.Result is not ObjectResult)
+        {
+            return;
+        }
+        var resultObject = context.Result as ObjectResult;
+        if (resultObject.Value is not HandlerResponse)
+        {
+            return;
+        }
+        var handlerResponse = resultObject.Value as HandlerResponse;
+        var apiResponse = new ApiResponse<object>()
+        {
+            Status = handlerResponse.Status,
+            Message = _localizeService.GetLocalizedString(LocalizeType.ApiResponseStatus,
+                handlerResponse.Status.GetLocalizeKey()),
+            Result = handlerResponse.Data
+        };
+        context.Result = new ObjectResult(apiResponse)
+        {
+            StatusCode = resultObject.StatusCode
+        };       
     }
 
     public void OnResultExecuted(ResultExecutedContext context)

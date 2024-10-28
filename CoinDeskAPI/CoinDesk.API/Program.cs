@@ -36,6 +36,7 @@ public class Program
         builder.Services.AddCustomConfigure(builder.Configuration);
         builder.Services.AddCustomService();
         builder.Services.AddCustomHttpClient();
+        builder.Services.AddCustomJwtAuthentication(builder.Configuration);
         
         var app = builder.Build();
         app.UseCustomRequestLocalization();

@@ -1,9 +1,10 @@
 ﻿using System.Runtime.CompilerServices;
+using CoinDesk.Model.Response;
 using MediatR;
 
 namespace CoinDesk.Model.Command;
 
-public class AddCurrencyCommand : IRequest<bool>
+public class AddCurrencyCommand : IRequest<HandlerResponse>
 {
     /// <summary>
     /// 幣別代碼

@@ -1,5 +1,6 @@
 ﻿using CodeDesk.Service.Implements;
 using CodeDesk.Service.Interfaces;
+using CoinDesk.Utility;
 
 namespace CoinDesk.API.Extension;
 
@@ -10,6 +11,8 @@ public static class ServiceExtension
         services.AddScoped<ICurrencyService, CoinDeskService>();
         services.AddSingleton<ILocalizeService, LocalizeService>();
 
+
+        services.AddSingleton<JwtTokenGenerator>();
         return services;
     }
 }

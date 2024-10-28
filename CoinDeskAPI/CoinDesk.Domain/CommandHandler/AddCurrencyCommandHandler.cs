@@ -1,11 +1,13 @@
 ﻿using CoinDesk.Infrastructure.Model;
 using CoinDesk.Infrastructure.Repository.Base;
 using CoinDesk.Model.Command;
+using CoinDesk.Model.Enum;
+using CoinDesk.Model.Response;
 using MediatR;
 
 namespace CoinDesk.Domain.CommandHandler;
 
-public class AddCurrencyCommandHandler : IRequestHandler<AddCurrencyCommand, bool>
+public class AddCurrencyCommandHandler : IRequestHandler<AddCurrencyCommand, HandlerResponse>
 {
     private readonly IUnitOfWork _unitOfWork;
 
@@ -14,12 +16,15 @@ public class AddCurrencyCommandHandler : IRequestHandler<AddCurrencyCommand, boo
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<bool> Handle(AddCurrencyCommand request, CancellationToken cancellationToken)
+    public async Task<HandlerResponse> Handle(AddCurrencyCommand request, CancellationToken cancellationToken)
     {
         var exist = await _unitOfWork.CurrencyRepository.AnyAsync(item => item.CurrencyCode == request.CurrencyCode);
         if (exist)
         {
-            return false;
+            return new HandlerResponse
+            {
+                Status = ApiResponseStatus.CurrencyExist
+            };
         }
         var newCurrency = new Currency
         {
@@ -29,6 +34,9 @@ public class AddCurrencyCommandHandler : IRequestHandler<AddCurrencyCommand, boo
         };
         await _unitOfWork.CurrencyRepository.AddAsync(newCurrency);
         var result = await _unitOfWork.SaveChangesAsync();
-        return result > 0;
+        return new HandlerResponse
+        {
+            Status = ApiResponseStatus.Success
+        };
     }
 }

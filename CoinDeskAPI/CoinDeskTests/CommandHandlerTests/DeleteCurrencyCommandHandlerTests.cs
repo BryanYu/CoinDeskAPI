@@ -4,6 +4,8 @@ using CoinDesk.Infrastructure.Model;
 using CoinDesk.Infrastructure.Repository.Base;
 using CoinDesk.Infrastructure.Repository.Interfaces;
 using CoinDesk.Model.Command;
+using CoinDesk.Model.Enum;
+using CoinDesk.Model.Response;
 using FluentAssertions;
 using Moq;
 
@@ -26,12 +28,15 @@ public class DeleteCurrencyCommandHandlerTests
     }
     
     [Test]
-    public async Task DeleteCurrencyCommandHandler_DeleteExistCurrency_ReturnTrue()
+    public async Task DeleteCurrencyCommandHandler_DeleteExistCurrency_ReturnSuccess()
     {
         // arrange
         _currencyRepositoryMock.Setup(item => item.AnyAsync(It.IsAny<Expression<Func<Currency, bool>>>()))
             .ReturnsAsync(true);
-        var expected = true;
+        var expected = new HandlerResponse
+        {
+            Status = ApiResponseStatus.Success
+        };
         
         // actual
         var actual = await _deleteCurrencyCommandHandler.Handle(new DeleteCurrencyCommand
@@ -40,7 +45,7 @@ public class DeleteCurrencyCommandHandlerTests
         }, CancellationToken.None);
         
         // assert
-        expected.Should().Be(actual);
+        expected.Should().BeEquivalentTo(actual);
         _currencyRepositoryMock.Verify(item => item.DeleteAsync(It.IsAny<Guid>()), Times.Once);
         _unitOfWorkMock.Verify(item => item.SaveChangesAsync(), Times.Once);
     }

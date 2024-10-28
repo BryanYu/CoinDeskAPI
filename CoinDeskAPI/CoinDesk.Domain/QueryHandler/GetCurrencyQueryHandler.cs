@@ -10,7 +10,7 @@ using Microsoft.Extensions.Localization;
 
 namespace CoinDesk.Domain.QueryHandler;
 
-public class GetCurrencyQueryHandler : IRequestHandler<GetCurrencyQuery, PagedResultResponse<CurrencyResponse>>
+public class GetCurrencyQueryHandler : IRequestHandler<GetCurrencyQuery, HandlerResponse>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly ICurrencyService _currencyService;
@@ -23,12 +23,15 @@ public class GetCurrencyQueryHandler : IRequestHandler<GetCurrencyQuery, PagedRe
         _localizeService = localizeService;
     }
     
-    public async Task<PagedResultResponse<CurrencyResponse>> Handle(GetCurrencyQuery request, CancellationToken cancellationToken)
+    public async Task<HandlerResponse> Handle(GetCurrencyQuery request, CancellationToken cancellationToken)
     {
         var currencyResult = await this._currencyService.GetCurrencyPriceAsync();
         if (currencyResult.apiStatus != ThirdPartyApiStatus.Success)
         {
-            return new PagedResultResponse<CurrencyResponse>();
+            return new HandlerResponse
+            {
+                Status = ApiResponseStatus.ThirdPartyApiError
+            };
         }
         var pagingParameter = new PaginationParameter
         {
@@ -58,18 +61,22 @@ public class GetCurrencyQueryHandler : IRequestHandler<GetCurrencyQuery, PagedRe
         
         var currencyCodes = queryResult.Items.Select(item => item.CurrencyCode);
         var updatedTime = ConvertUpdatedTime(currencyCodes, currencyResult.updatedTime, currencyResult.currencyPrices);
-        return new PagedResultResponse<CurrencyResponse>
+        return new HandlerResponse
         {
-            Pagination = new Pagination
+            Status = ApiResponseStatus.Success,
+            Data = new PagedResultResponse<CurrencyResponse>
             {
-                TotalRecords = queryResult.TotalRecords,
-                PageNumber = request.PageNumber,
-                PageSize = request.PageSize,
-            },
-            Data = new CurrencyResponse
-            {
-                Currencies = currencyDetails,
-                UpdatedTime = updatedTime
+                Pagination = new Pagination
+                {
+                    TotalRecords = queryResult.TotalRecords,
+                    PageNumber = request.PageNumber,
+                    PageSize = request.PageSize,
+                },
+                Data = new CurrencyResponse
+                {
+                    Currencies = currencyDetails,
+                    UpdatedTime = updatedTime
+                }
             }
         };
     }

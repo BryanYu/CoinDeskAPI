@@ -4,10 +4,12 @@ namespace CoinDesk.API.Extension;
 
 public static class ConfigureExtension
 {
-    public static IServiceCollection AddCustomConfigure(this IServiceCollection services, ConfigurationManager configuration)
+    public static IServiceCollection AddCustomConfigure(this IServiceCollection services,
+        ConfigurationManager configuration)
     {
         services.Configure<PaginationConfig>(configuration.GetSection("PaginationConfig"));
         services.Configure<CoinDeskConfig>(configuration.GetSection("CoinDeskConfig"));
+        services.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));
         return services;
     }
 }

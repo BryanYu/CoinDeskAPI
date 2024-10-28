@@ -1,10 +1,12 @@
 ﻿using CoinDesk.Infrastructure.Repository.Base;
 using CoinDesk.Model.Command;
+using CoinDesk.Model.Enum;
+using CoinDesk.Model.Response;
 using MediatR;
 
 namespace CoinDesk.Domain.CommandHandler;
 
-public class DeleteCurrencyCommandHandler : IRequestHandler<DeleteCurrencyCommand, bool>
+public class DeleteCurrencyCommandHandler : IRequestHandler<DeleteCurrencyCommand, HandlerResponse>
 {
     private readonly IUnitOfWork _unitOfWork;
 
@@ -13,10 +15,13 @@ public class DeleteCurrencyCommandHandler : IRequestHandler<DeleteCurrencyComman
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<bool> Handle(DeleteCurrencyCommand request, CancellationToken cancellationToken)
+    public async Task<HandlerResponse> Handle(DeleteCurrencyCommand request, CancellationToken cancellationToken)
     {
         await _unitOfWork.CurrencyRepository.DeleteAsync(request.Id);
         var result = await _unitOfWork.SaveChangesAsync();
-        return result > 0;
+        return new HandlerResponse
+        {
+            Status = ApiResponseStatus.Success
+        };
     }
 }

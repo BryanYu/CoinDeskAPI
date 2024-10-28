@@ -3,6 +3,8 @@ using CoinDesk.Infrastructure.Model;
 using CoinDesk.Infrastructure.Repository.Base;
 using CoinDesk.Infrastructure.Repository.Interfaces;
 using CoinDesk.Model.Command;
+using CoinDesk.Model.Enum;
+using CoinDesk.Model.Response;
 using FluentAssertions;
 using Moq;
 
@@ -25,11 +27,14 @@ public class UpdateCurrencyCommandHandlerTests
     }
 
     [Test]
-    public async Task UpdateCurrencyCommandHandler_UpdateNonExistCurrency_ReturnFalse()
+    public async Task UpdateCurrencyCommandHandler_UpdateNonExistCurrency_ReturnCurrencyNotExist()
     {
         // arrange
         _currencyRepositoryMock.Setup(item => item.GetByIdAsync(It.IsAny<Guid>())).ReturnsAsync((Currency)null);
-        var expected = false;
+        var expected = new HandlerResponse
+        {
+            Status = ApiResponseStatus.CurrencyNotExist
+        };
         
         // actual
         var actual = await _updateCurrencyCommandHandler.Handle(new UpdateCurrencyCommand
@@ -39,11 +44,11 @@ public class UpdateCurrencyCommandHandlerTests
         }, CancellationToken.None);
         
         // assert
-        expected.Should().Be(actual);
+        expected.Should().BeEquivalentTo(actual);
     }
     
     [Test]
-    public async Task UpdateCurrencyCommandHandler_UpdateExistCurrency_ReturnTrue()
+    public async Task UpdateCurrencyCommandHandler_UpdateExistCurrency_ReturnSuccess()
     {
         // arrange
         var guid = Guid.NewGuid();
@@ -53,7 +58,10 @@ public class UpdateCurrencyCommandHandlerTests
             Name = "美金"
         };
         _currencyRepositoryMock.Setup(item => item.GetByIdAsync(It.IsAny<Guid>())).ReturnsAsync(returnMockCurrency);
-        var expected = true;
+        var expected = new HandlerResponse
+        {
+            Status = ApiResponseStatus.Success
+        };
         
         // actual
         var actual = await _updateCurrencyCommandHandler.Handle(new UpdateCurrencyCommand
@@ -65,7 +73,7 @@ public class UpdateCurrencyCommandHandlerTests
         // assert
         _currencyRepositoryMock.Verify(item => item.UpdateAsync(It.IsAny<Currency>()), Times.Once);
         _unitOfWorkMock.Verify(item => item.SaveChangesAsync(), Times.Once);
-        expected.Should().Be(actual);
+        expected.Should().BeEquivalentTo(actual);
         
         
     }

@@ -40,6 +40,7 @@ public class ModelValidateActionFilter : IActionFilter
                 Message = _localizeService.GetLocalizedString(LocalizeType.ApiResponseStatus, localizeKey)
             });
             context.Result = response;
+            context.HttpContext.Items["IsGenerateResponse"] = true;
         }
     }
 

@@ -3,7 +3,7 @@ using MediatR;
 
 namespace CoinDesk.Model.Query;
 
-public class GetCurrencyQuery : IRequest<PagedResultResponse<CurrencyResponse>> 
+public class GetCurrencyQuery : IRequest<HandlerResponse> 
 {
     /// <summary>
     /// 每頁幾筆
