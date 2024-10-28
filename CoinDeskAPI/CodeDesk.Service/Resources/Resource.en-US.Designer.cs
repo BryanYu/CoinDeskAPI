@@ -60,6 +60,24 @@ namespace CodeDesk.Service.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Currency Exist.
+        /// </summary>
+        internal static string ApiResponseStatus_CurrencyExist {
+            get {
+                return ResourceManager.GetString("ApiResponseStatus_CurrencyExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Currency Not Exist.
+        /// </summary>
+        internal static string ApiResponseStatus_CurrencyNotExist {
+            get {
+                return ResourceManager.GetString("ApiResponseStatus_CurrencyNotExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Failed.
         /// </summary>
         internal static string ApiResponseStatus_Error {
@@ -92,6 +110,33 @@ namespace CodeDesk.Service.Resources {
         internal static string ApiResponseStatus_Success {
             get {
                 return ResourceManager.GetString("ApiResponseStatus_Success", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ThirdParty API Error.
+        /// </summary>
+        internal static string ApiResponseStatus_ThirdPartyApiError {
+            get {
+                return ResourceManager.GetString("ApiResponseStatus_ThirdPartyApiError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User Not Exist.
+        /// </summary>
+        internal static string ApiResponseStatus_UserNotExist {
+            get {
+                return ResourceManager.GetString("ApiResponseStatus_UserNotExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User Password Incorrect.
+        /// </summary>
+        internal static string ApiResponseStatus_UserPasswordError {
+            get {
+                return ResourceManager.GetString("ApiResponseStatus_UserPasswordError", resourceCulture);
             }
         }
         

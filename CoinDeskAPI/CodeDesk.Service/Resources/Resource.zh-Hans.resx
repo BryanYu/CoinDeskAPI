@@ -60,4 +60,19 @@
     <data name="ModelValidError_CurrencyNameLengthMax20" xml:space="preserve">
         <value>币别名称字元最多20个</value>
     </data>
+    <data name="ApiResponseStatus_UserNotExist" xml:space="preserve">
+        <value>用户不存在</value>
+    </data>
+    <data name="ApiResponseStatus_ThirdPartyApiError" xml:space="preserve">
+        <value>第三方 API 发生错误</value>
+    </data>
+    <data name="ApiResponseStatus_CurrencyExist" xml:space="preserve">
+        <value>货币资料已存在</value>
+    </data>
+    <data name="ApiResponseStatus_CurrencyNotExist" xml:space="preserve">
+        <value>货币资料不存在</value>
+    </data>
+    <data name="ApiResponseStatus_UserPasswordError" xml:space="preserve">
+        <value>用户密码错误</value>
+    </data>
 </root>

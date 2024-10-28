@@ -60,4 +60,19 @@
     <data name="ModelValidError_CurrencyNameLengthMax20" xml:space="preserve">
         <value>CurrencyName Max Length is 20</value>
     </data>
+    <data name="ApiResponseStatus_UserNotExist" xml:space="preserve">
+        <value>User Not Exist</value>
+    </data>
+    <data name="ApiResponseStatus_UserPasswordError" xml:space="preserve">
+        <value>User Password Incorrect</value>
+    </data>
+    <data name="ApiResponseStatus_ThirdPartyApiError" xml:space="preserve">
+        <value>ThirdParty API Error</value>
+    </data>
+    <data name="ApiResponseStatus_CurrencyExist" xml:space="preserve">
+        <value>Currency Exist</value>
+    </data>
+    <data name="ApiResponseStatus_CurrencyNotExist" xml:space="preserve">
+        <value>Currency Not Exist</value>
+    </data>
 </root>
