@@ -48,9 +48,7 @@ public class Program
         {
             app.UseSwagger();
             app.UseSwaggerUI();
-        }
-        if (app.Environment.IsDocker())
-        {
+            
             using var scope = app.Services.CreateScope();
             var dbContext = scope.ServiceProvider.GetRequiredService<CurrencyDbContext>();
             dbContext.Database.Migrate();
